@@ -1,0 +1,25 @@
+// Fills in the four summary cards at the top of index.html with live data
+// from the FabricNow backend, so the dashboard reflects real inventory
+// instead of hardcoded demo numbers.
+
+function money(n) {
+  return `$${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const totalProductsEl = document.getElementById("statTotalProducts");
+  if (!totalProductsEl) return; // not on the dashboard home page
+
+  try {
+    const stats = await window.FabricNowAPI.getStats();
+
+    totalProductsEl.textContent = stats.totalProducts;
+    document.getElementById("statTotalCategories").textContent = `${stats.totalCategories} categories`;
+    document.getElementById("statInventoryValue").textContent = money(stats.inventoryValue);
+    document.getElementById("statTotalStock").textContent = stats.totalStockUnits.toLocaleString();
+    document.getElementById("statLowStock").textContent = stats.lowStockCount;
+  } catch (err) {
+    totalProductsEl.textContent = "N/A";
+    console.error("Could not load dashboard stats — is the API running?", err);
+  }
+});

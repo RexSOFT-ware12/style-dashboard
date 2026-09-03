@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>InApp Inventory Dashboard</title>
+  <title>FabricNow Inventory Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png">
@@ -132,7 +132,7 @@
   <aside id="sidebar" class="sidebar">
     <div class="logo-area">
      <a href="index.html" class="d-inline-flex"><img src="./assets/images/logo-icon.svg" alt="" width="24">
-        <span class="logo-text ms-2"> <img src="./assets/images/logo.svg" alt=""></span>
+        <span class="logo-text ms-2"> <span class="fw-bold" style="font-size:1.15rem;letter-spacing:.02em;color:#302C4D;">Fabric<span style="color:#E66239;">Now</span></span></span>
       </a>
     </div>
     <ul class="nav flex-column">
@@ -180,9 +180,9 @@
                 <i class="ti ti-report-analytics fs-4"></i>
               </div>
               <div>
-                <h2 class="mb-3 fs-6">Total Sales</h2>
-                <h3 class="fw-bold mb-0">$25,000</h3>
-                <p class="text-primary mb-0 small">+5% since last month</p>
+                <h2 class="mb-3 fs-6">Total Products</h2>
+                <h3 class="fw-bold mb-0" id="statTotalProducts">—</h3>
+                <p class="text-primary mb-0 small" id="statTotalCategories">—</p>
               </div>
             </div>
           </div>
@@ -198,9 +198,9 @@
                 <i class="ti ti-repeat fs-4"></i>
               </div>
               <div>
-                <h2 class="mb-3 fs-6">Total Purchase</h2>
-                <h3 class="fw-bold mb-0">$18,000</h3>
-                <p class="text-success mb-0 small">+22% since last month</p>
+                <h2 class="mb-3 fs-6">Inventory Value</h2>
+                <h3 class="fw-bold mb-0" id="statInventoryValue">—</h3>
+                <p class="text-success mb-0 small">Price × stock, across all products</p>
               </div>
             </div>
           </div>
@@ -216,9 +216,9 @@
                 <i class="ti ti-currency-dollar fs-4"></i>
               </div>
               <div>
-                <h2 class="mb-3 fs-6">Total Expenses</h2>
-                <h3 class="fw-bold mb-0">$9,000</h3>
-                <p class="text-info mb-0 small">+10% since last month</p>
+                <h2 class="mb-3 fs-6">Total Stock Units</h2>
+                <h3 class="fw-bold mb-0" id="statTotalStock">—</h3>
+                <p class="text-info mb-0 small">Units across all products</p>
               </div>
             </div>
           </div>
@@ -234,9 +234,9 @@
                 <i class="ti ti-notes fs-4"></i>
               </div>
               <div>
-                <h2 class="mb-3 fs-6">Invoice Due</h2>
-                <h3 class="fw-bold mb-0">$25,000</h3>
-                <p class="text-warning mb-0 small">+35% since last month</p>
+                <h2 class="mb-3 fs-6">Low Stock Items</h2>
+                <h3 class="fw-bold mb-0" id="statLowStock">—</h3>
+                <p class="text-warning mb-0 small">15 units or fewer remaining</p>
               </div>
             </div>
           </div>
@@ -636,7 +636,7 @@
       <div class="row">
         <div class="col-12">
 <footer class="text-center py-2 mt-6 text-secondary ">
-        <p class="mb-0">Copyright © 2026 InApp Inventory Dashboard. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a> </p>
+        <p class="mb-0">Copyright © 2026 FabricNow Inventory Dashboard. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a> </p>
       </footer>
         </div>
 
@@ -647,8 +647,8 @@
 
   <!-- Bootstrap JS -->
   <script src="./assets/js/main.js" type="module"></script>
-
-
+  <script src="./assets/js/api.js" type="module"></script>
+  <script src="./assets/js/dashboard.js" type="module"></script>
 
 </body>
 

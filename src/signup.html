@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Signup - InApp Inventory Dashboard</title>
+  <title>Signup - FabricNow Inventory Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png">
@@ -20,13 +20,13 @@
     <div class="card-body p-5">
       <div class="text-center mb-3">
      <a href="index.html" class="mb-4 d-inline-block"><img src="./assets/images/logo-icon.svg" alt="" width="36">
-      <span class="ms-2"> <img src="./assets/images/logo.svg" alt=""></span>
+      <span class="ms-2"> <span class="fw-bold" style="font-size:1.15rem;letter-spacing:.02em;color:#302C4D;">Fabric<span style="color:#E66239;">Now</span></span></span>
       </a>
         <h1 class="card-title mb-5 h5">Create your account</h1>
 
       </div>
 
-      <form class="needs-validation mt-3" novalidate>
+      <form class="needs-validation mt-3" id="signupForm" novalidate>
         <div class="mb-3">
           <label for="fullName" class="form-label">Full name</label>
           <input id="fullName" type="text" class="form-control" placeholder="Jane Doe" required>
@@ -72,6 +72,8 @@
 
   <!-- Bootstrap JS -->
   <script src="./assets/js/main.js" type="module"></script>
+  <script src="./assets/js/api.js" type="module"></script>
+  <script src="./assets/js/auth.js" type="module"></script>
 
 
 </body>

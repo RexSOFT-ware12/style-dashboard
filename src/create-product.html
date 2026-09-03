@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Create Product - InApp Inventory Dashboard</title>
+  <title>Create Product - FabricNow Inventory Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png">
@@ -131,7 +131,7 @@
   <aside id="sidebar" class="sidebar">
     <div class="logo-area">
       <a href="index.html" class="d-inline-flex"><img src="./assets/images/logo-icon.svg" alt="" width="24">
-        <span class="logo-text ms-2"> <img src="./assets/images/logo.svg" alt=""></span>
+        <span class="logo-text ms-2"> <span class="fw-bold" style="font-size:1.15rem;letter-spacing:.02em;color:#302C4D;">Fabric<span style="color:#E66239;">Now</span></span></span>
       </a>
     </div>
     <ul class="nav flex-column">
@@ -185,7 +185,7 @@
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="productSKU" class="form-label">SKU</label>
-                    <input type="text" class="form-control" id="productSKU" placeholder="Enter SKU" required>
+                    <input type="text" class="form-control" id="productSKU" placeholder="Auto-generated if left blank">
                   </div>
                 </div>
                 <div class="row">
@@ -199,26 +199,74 @@
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="productCategory" class="form-label">Category</label>
-                  <select class="form-select" id="productCategory" required>
-                    <option value="">Select category</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="food">Food</option>
-                  </select>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="productCategory" class="form-label">Category</label>
+                    <select class="form-select" id="productCategory" required>
+                      <option value="">Select category</option>
+                      <option value="Footwear">Footwear</option>
+                      <option value="Apparel">Apparel</option>
+                      <option value="Accessories">Accessories</option>
+                      <option value="Outerwear">Outerwear</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="productBrand" class="form-label">Brand</label>
+                    <input type="text" class="form-control" id="productBrand" placeholder="FabricNow" value="FabricNow">
+                  </div>
                 </div>
+
+                <div class="row">
+                  <div class="col-md-4 mb-3">
+                    <label for="productStyle" class="form-label">Style</label>
+                    <select class="form-select" id="productStyle" required>
+                      <option value="">Select style</option>
+                      <option value="Athletic">Athletic</option>
+                      <option value="Streetwear">Streetwear</option>
+                      <option value="Casual">Casual</option>
+                      <option value="Retro">Retro</option>
+                      <option value="Lifestyle">Lifestyle</option>
+                      <option value="Bohemian">Bohemian</option>
+                      <option value="Formal">Formal</option>
+                      <option value="Vintage">Vintage</option>
+                    </select>
+                    <div class="form-text">Displayed as a badge on the storefront product page.</div>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="productFabric" class="form-label">Fabric</label>
+                    <select class="form-select" id="productFabric" required>
+                      <option value="">Select fabric</option>
+                      <option value="Cotton">Cotton</option>
+                      <option value="Leather">Leather</option>
+                      <option value="Mesh">Mesh</option>
+                      <option value="Denim">Denim</option>
+                      <option value="Polyester">Polyester</option>
+                      <option value="Suede">Suede</option>
+                      <option value="Wool">Wool</option>
+                      <option value="Silk">Silk</option>
+                      <option value="Canvas">Canvas</option>
+                      <option value="Knit">Knit</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="productColor" class="form-label">Color</label>
+                    <input type="text" class="form-control" id="productColor" placeholder="e.g. Black/White">
+                  </div>
+                </div>
+
                 <div class="mb-3">
                   <label for="productImage" class="form-label">Product Image</label>
-                  <input type="file" class="form-control" id="productImage" accept="image/*" required>
+                  <input type="file" class="form-control" id="productImage" accept="image/*">
+                  <div class="form-text">Optional — leave blank to use a placeholder image.</div>
                 </div>
                 <div class="mb-3">
                   <label for="productDescription" class="form-label">Description</label>
                   <textarea class="form-control" id="productDescription" rows="4"
                     placeholder="Enter product description"></textarea>
                 </div>
+                <div id="formAlert" class="alert d-none" role="alert"></div>
                 <div class="d-flex gap-2">
-                  <button type="submit" class="btn btn-primary">Add Product</button>
+                  <button type="submit" class="btn btn-primary" id="submitBtn">Add Product</button>
                   <button type="reset" class="btn btn-secondary">Clear</button>
                 </div>
 
@@ -234,7 +282,7 @@
       <div class="row">
         <div class="col-12">
           <footer class="text-center py-2 mt-6 text-secondary ">
-            <p class="mb-0">Copyright © 2026 InApp Inventory Dashboard. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a> </p>
+            <p class="mb-0">Copyright © 2026 FabricNow Inventory Dashboard. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a> </p>
           </footer>
         </div>
 
@@ -245,8 +293,8 @@
 
   <!-- Bootstrap JS -->
   <script src="./assets/js/main.js" type="module"></script>
-
-
+  <script src="./assets/js/api.js" type="module"></script>
+  <script src="./assets/js/create-product.js" type="module"></script>
 
 </body>
 
