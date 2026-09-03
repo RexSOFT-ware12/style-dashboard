@@ -1,7 +1,7 @@
 {
   "name": "fabricnow-dashboard",
   "version": "1.0.0",
-  "description": "FabricNow Inventory Dashboard",
+  "description": "FabricNow Dashboard",
   "main": "index.js",
   "scripts": {
     "start": "vite",

@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const imageInput = document.getElementById("productImage");
     const hasFile = imageInput.files && imageInput.files.length > 0;
 
+    const digitalFileInput = document.getElementById("productDigitalFile");
+    const hasDigitalFile = digitalFileInput.files && digitalFileInput.files.length > 0;
+
     const fields = {
       name: document.getElementById("productName").value.trim(),
       sku: document.getElementById("productSKU").value.trim(),
@@ -45,9 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (!hasDigitalFile) {
+      showAlert("Please attach the .zip file customers will download after purchase (it should include the .zprj and any related assets).");
+      return;
+    }
+
     const formData = new FormData();
     Object.entries(fields).forEach(([key, value]) => formData.append(key, value));
     if (hasFile) formData.append("image", imageInput.files[0]);
+    if (hasDigitalFile) formData.append("digitalFile", digitalFileInput.files[0]);
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Adding...";
