@@ -1,7 +1,11 @@
 // Shared auth handler for signin.html and signup.html.
 
+const ALLOWED_REDIRECTS = ["index.html", "inventory.html", "create-product.html", "reports.html", "docs.html"];
+
 function redirectToDashboard() {
-  window.location.href = "./index.html";
+  const params = new URLSearchParams(window.location.search);
+  const next = params.get("next");
+  window.location.href = ALLOWED_REDIRECTS.includes(next) ? `./${next}` : "./index.html";
 }
 
 document.addEventListener("DOMContentLoaded", () => {

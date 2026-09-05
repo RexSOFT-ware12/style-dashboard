@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png">
   <link rel="manifest" href="./assets/images/favicon_io/site.webmanifest">
+  <link rel="stylesheet" href="./assets/scss/style.scss">
 </head>
 
 <body>
@@ -28,7 +29,7 @@
        <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
         <!-- Pages link -->
 
-        <!-- Bell icon -->
+        <!-- Bell icon (no real notifications backend yet — shown empty rather than faked) -->
         <li>
           <a class="position-relative btn-icon btn-sm btn-light btn rounded-circle" data-bs-toggle="dropdown"
             aria-expanded="false" href="#" role="button">
@@ -39,46 +40,10 @@
               <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
               <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
             </svg>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
-              2
-              <span class="visually-hidden">unread messages</span>
-            </span>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-0">
             <ul class="list-unstyled p-0 m-0">
-              <li class="p-3 border-bottom ">
-                <div class="d-flex gap-3">
-                  <img src="./assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-sm rounded-circle" />
-                  <div class="flex-grow-1 small">
-                    <p class="mb-0">New order received</p>
-                    <p class="mb-1">Order #12345 has been placed</p>
-                    <div class="text-secondary">5 minutes ago</div>
-                  </div>
-                </div>
-              </li>
-              <li class="p-3 border-bottom ">
-                <div class="d-flex gap-3">
-                  <img src="./assets/images/avatar/avatar-4.jpg" alt="" class="avatar avatar-sm rounded-circle" />
-                  <div class="flex-grow-1 small">
-                    <p class="mb-0">New user registered</p>
-                    <p class="mb-1">User @john_doe has signed up</p>
-                    <div class="text-secondary">30 minutes ago</div>
-                  </div>
-              </li>
-
-              <li class="p-3 border-bottom">
-                <div class="d-flex gap-3">
-                  <img src="./assets/images/avatar/avatar-2.jpg" alt="" class="avatar avatar-sm rounded-circle" />
-                  <div class="flex-grow-1 small">
-                    <p class="mb-0">Payment confirmed</p>
-                    <p class="mb-1">Payment of $299 has been received</p>
-                    <div class="text-secondary">1 hour ago</div>
-                  </div>
-                </div>
-              </li>
-              <li class="px-4 py-3 text-center">
-                <a href="#" class="text-primary ">View all notifications</a>
-              </li>
+              <li class="px-4 py-3 text-center text-secondary small">No new notifications</li>
             </ul>
           </div>
         </li>
@@ -92,30 +57,22 @@
               <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
                 <img src="./assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-md rounded-circle" />
                 <div>
-                  <h4 class="mb-0 small">Shrina Tesla</h4>
-                  <p class="mb-0  small">@imshrina</p>
+                  <h4 id="topbarUserName" class="mb-0 small">Guest</h4>
+                  <p id="topbarUserHandle" class="mb-0  small">Not signed in</p>
                 </div>
               </div>
               <div class="p-3 d-flex flex-column gap-1 small lh-lg">
-                <a href="#!" class="">
-
-                  <span>Home</span>
+                <a href="#!" class="" id="topbarAccountSettingsLink" hidden>
+                  <span>Account Settings</span>
                 </a>
-                <a href="#!" class="">
-
-                  <span> Inbox</span>
+                <a href="signin.html" class="" id="topbarLoginLink">
+                  <span>Log in</span>
                 </a>
-                <a href="#!" class="">
-
-                  <span> Chat</span>
+                <a href="signup.html" class="" id="topbarSignupLink">
+                  <span>Sign up</span>
                 </a>
-                <a href="#!" class="">
-
-                  <span> Activity</span>
-                </a>
-                <a href="#!" class="">
-
-                  <span> Account Settings</span>
+                <a href="#!" class="" id="topbarLogoutLink" hidden>
+                  <span>Log out</span>
                 </a>
               </div>
 
@@ -142,6 +99,8 @@
             class="nav-text">Inventory</span></a></li>
       <li><a class="nav-link" href="create-product.html"><i class="ti ti-plus"></i><span class="nav-text">Add
             Product</span></a></li>
+      <li><a class="nav-link" href="design-patterns.html"><i class="ti ti-vector-bezier-2"></i><span class="nav-text">Design Patterns</span></a></li>
+      <li><a class="nav-link" href="taxonomies.html"><i class="ti ti-list-details"></i><span class="nav-text">Catalog Options</span></a></li>
     <li><a class="nav-link" href="reports.html"><i class="ti ti-receipt"></i><span class="nav-text">Reports</span></a>
       </li>
     <li><a class="nav-link" href="404-error.html"><i class="ti ti-alert-circle"></i><span class="nav-text">404 Error</span></a>
@@ -149,10 +108,12 @@
       <li><a class="nav-link" href="docs.html"><i class="ti ti-file-text"></i><span class="nav-text">Docs</span></a></li>
 
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
-      <li><a class="nav-link" href="signin.html"><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a>
+      <li id="sidebarLoginItem"><a class="nav-link" href="signin.html"><i class="ti ti-login"></i><span class="nav-text">Log in</span></a>
       </li>
-      <li><a class="nav-link" href="signup.html"><i class="ti ti-user-plus"></i><span class="nav-text">Sign
+      <li id="sidebarSignupItem"><a class="nav-link" href="signup.html"><i class="ti ti-user-plus"></i><span class="nav-text">Sign
             up</span></a></li>
+      <li id="sidebarUserItem" hidden><a class="nav-link" href="#!"><i class="ti ti-user"></i><span id="sidebarUserName" class="nav-text">Account</span></a></li>
+      <li id="sidebarLogoutItem" hidden><a class="nav-link" href="#!" id="sidebarLogoutLink"><i class="ti ti-logout"></i><span class="nav-text">Log out</span></a></li>
     </ul>
 
   </aside>
@@ -203,20 +164,19 @@
                   <th>Fabric</th>
                   <th>Brand</th>
                   <th>Price</th>
-                  <th>Quantity</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody id="inventoryTableBody">
                 <tr>
-                  <td colspan="9" class="text-center text-secondary py-4">Loading products…</td>
+                  <td colspan="8" class="text-center text-secondary py-4">Loading products…</td>
                 </tr>
               </tbody>
               <tfoot class="">
 
                 <tr>
                   <td class="border-bottom-0" id="inventoryCount">Showing 0 products</td>
-                  <td colspan="9" class="border-bottom-0">
+                  <td colspan="8" class="border-bottom-0">
                     <nav aria-label="Page navigation" class="d-flex justify-content-end">
                       <ul class="pagination mb-0">
                         <li class="page-item disabled">
@@ -236,18 +196,6 @@
         </div>
 
       </div>
-    <div class="row">
-        <div class="col-12">
-<footer class="text-center py-2 mt-6 text-secondary ">
-        <p class="mb-0">Copyright © 2026 FabricNow Dashboard. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a> </p>
-      </footer>
-        </div>
-
-      </div>
-
-
-
-
     </div>
   </main>
 
@@ -264,6 +212,7 @@
   <!-- Bootstrap JS -->
   <script src="./assets/js/main.js" type="module"></script>
   <script src="./assets/js/api.js" type="module"></script>
+  <script src="./assets/js/auth-ui.js" type="module"></script>
   <script src="./assets/js/inventory.js" type="module"></script>
 
 </body>

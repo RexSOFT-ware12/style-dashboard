@@ -1,11 +1,14 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { resolve } from 'path'
 import glob from 'fast-glob'
 // Grab all HTML files inside src (including subfolders)
 const htmlFiles = glob.sync('./src/**/*.html')
 
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, __dirname, '');
+
+  return {
    base: './',
    root: resolve(__dirname, 'src'),   // ✅ keeps dev server working
    server: {
@@ -56,4 +59,8 @@ export default defineConfig({
       },
     },
   },
+    define: {
+      'import.meta.env.FABRICNOW_API_BASE': JSON.stringify(env.FABRICNOW_API_BASE || ''),
+    },
+  };
 });

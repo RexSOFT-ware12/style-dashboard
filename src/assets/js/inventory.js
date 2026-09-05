@@ -15,7 +15,6 @@ function escapeHtml(str = "") {
 }
 
 function renderRow(product) {
-  const lowStock = Number(product.stock) <= 15;
   return `
     <tr class="align-middle" data-id="${product.id}">
       <td>
@@ -30,12 +29,14 @@ function renderRow(product) {
       <td>${escapeHtml(product.brand || "—")}</td>
       <td>${formatPrice(product.price)}</td>
       <td>
-        ${product.stock}
-        ${lowStock ? '<span class="badge bg-danger-subtle text-danger ms-1">Low</span>' : ""}
-      </td>
-      <td>
-        <a href="#" class="link-danger delete-product" data-id="${product.id}" title="Delete">
-          <i class="ti ti-trash ms-2"></i>
+        <a href="product-detail.html?id=${encodeURIComponent(product.id)}" class="link-secondary" title="View details">
+          <i class="ti ti-eye"></i>
+        </a>
+        <a href="create-product.html?id=${encodeURIComponent(product.id)}" class="link-primary ms-2" title="Edit">
+          <i class="ti ti-edit"></i>
+        </a>
+        <a href="#" class="link-danger delete-product ms-2" data-id="${product.id}" title="Delete">
+          <i class="ti ti-trash"></i>
         </a>
       </td>
     </tr>
@@ -45,7 +46,7 @@ function renderRow(product) {
 async function loadInventory(search = "") {
   const tbody = document.getElementById("inventoryTableBody");
   const countEl = document.getElementById("inventoryCount");
-  tbody.innerHTML = `<tr><td colspan="9" class="text-center text-secondary py-4">Loading products…</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="8" class="text-center text-secondary py-4">Loading products…</td></tr>`;
 
   try {
     const { data, pagination } = await window.FabricNowAPI.listProducts({
@@ -54,7 +55,7 @@ async function loadInventory(search = "") {
     });
 
     if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="9" class="text-center text-secondary py-4">No products found.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center text-secondary py-4">No products found.</td></tr>`;
     } else {
       tbody.innerHTML = data.map(renderRow).join("");
     }
@@ -76,7 +77,7 @@ async function loadInventory(search = "") {
       });
     });
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger py-4">
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">
       Couldn't reach the FabricNow API. Is the backend running on http://localhost:4000? (${escapeHtml(err.message)})
     </td></tr>`;
   }
