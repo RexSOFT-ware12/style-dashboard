@@ -185,7 +185,6 @@ const FabricNowAPI = {
   },
 
   // Auth
-  signup: (payload) => apiRequest("/auth/signup", { method: "POST", body: payload }),
   signin: (payload) => apiRequest("/auth/signin", { method: "POST", body: payload }),
   me: () => apiRequest("/auth/me"),
 

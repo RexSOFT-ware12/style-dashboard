@@ -114,3 +114,40 @@
 @import "./button";
 @import "./icon-shape";
 @import "./utilities";
+
+
+/* FabricNow admin refresh */
+:root { --fn-ink:#1f2937; --fn-muted:#667085; --fn-brand:#4f46e5; --fn-brand-dark:#3730a3; --fn-canvas:#f5f7fb; }
+html, body { min-height:100%; }
+body { background:var(--fn-canvas); color:var(--fn-ink); font-family:Inter, Poppins, system-ui, -apple-system, sans-serif; }
+#topbar.topbar { min-height:76px; padding-inline:1.5rem!important; background:rgba(255,255,255,.96)!important; border-bottom:1px solid #e7eaf1!important; box-shadow:0 2px 12px rgba(16,24,40,.035); }
+#topbar .btn { border:1px solid #e6e8ef; }
+.sidebar { background:#fff; border-right:1px solid #e7eaf1; box-shadow:4px 0 24px rgba(16,24,40,.025); }
+.sidebar .logo-area { min-height:76px; display:flex; align-items:center; padding:1rem 1.5rem; border-bottom:1px solid #f0f1f5; }
+.sidebar .logo-area a { align-items:center; text-decoration:none; }
+.sidebar .nav { padding:1rem .75rem 1.5rem; gap:.25rem; }
+.sidebar .nav .nav-link { display:flex; align-items:center; gap:.8rem; margin:.1rem 0; padding:.75rem 1rem; border-radius:10px; color:#667085; font-size:.91rem; font-weight:500; transition:background .18s ease,color .18s ease; }
+.sidebar .nav .nav-link i { font-size:1.2rem; }
+.sidebar .nav .nav-link:hover { background:#f5f6ff; color:var(--fn-brand); }
+.sidebar .nav .nav-link.active { color:var(--fn-brand); background:#eeedff; font-weight:650; }
+.sidebar .nav .nav-text { color:inherit; }
+.sidebar .nav small.nav-text { color:#98a2b3; font-size:.68rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+#content.content { padding-top:6.5rem!important; }
+#content .container-fluid { padding:0 clamp(1rem,2vw,2rem) 2rem; }
+#content h1 { font-weight:700; letter-spacing:-.035em; color:#171c2b; }
+#content .card { border:1px solid #e8ebf2; border-radius:16px!important; box-shadow:0 4px 18px rgba(16,24,40,.035); }
+#content .card:hover { box-shadow:0 8px 24px rgba(16,24,40,.055); }
+#content .table { --bs-table-bg:transparent; vertical-align:middle; }
+#content .table thead th { color:#667085; font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; background:#f8f9fc; border-bottom-color:#e9ecf2; white-space:nowrap; }
+#content .table td { padding-top:1rem; padding-bottom:1rem; border-color:#edf0f5; }
+#content .form-control, #content .form-select, .card .form-control, .card .form-select { min-height:44px; border-color:#dfe3ec; border-radius:10px; }
+.btn { border-radius:10px; font-weight:600; }
+.btn-primary { background:var(--fn-brand); border-color:var(--fn-brand); }
+.btn-primary:hover { background:var(--fn-brand-dark); border-color:var(--fn-brand-dark); }
+.dropdown-menu { border:1px solid #e7eaf1; border-radius:12px; box-shadow:0 16px 40px rgba(16,24,40,.12); padding:.4rem; }
+.dropdown-item { border-radius:8px; padding:.6rem .8rem; }
+@media(max-width:991.98px) {
+  #topbar.topbar { min-height:64px; padding-inline:1rem!important; }
+  #content.content { padding-top:5.5rem!important; }
+  .sidebar .logo-area { min-height:64px; }
+}

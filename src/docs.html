@@ -10,6 +10,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png">
   <link rel="manifest" href="./assets/images/favicon_io/site.webmanifest">
   <link rel="stylesheet" href="./assets/scss/style.scss">
+<style>body:not(.admin-ready){visibility:hidden} body.admin-ready{visibility:visible}</style>
 </head>
 
 <body>
@@ -28,26 +29,7 @@
       <!-- Navbar nav -->
      <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
         <!-- Pages link -->
-
-        <!-- Bell icon (no real notifications backend yet — shown empty rather than faked) -->
-        <li>
-          <a class="position-relative btn-icon btn-sm btn-light btn rounded-circle" data-bs-toggle="dropdown"
-            aria-expanded="false" href="#" role="button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-bell">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
-              <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-            </svg>
-          </a>
-          <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-0">
-            <ul class="list-unstyled p-0 m-0">
-              <li class="px-4 py-3 text-center text-secondary small">No new notifications</li>
-            </ul>
-          </div>
-        </li>
-        <!-- Dropdown -->
+        <!-- Profile menu -->
         <li class="ms-3 dropdown">
           <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="./assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-sm rounded-circle" />
@@ -67,9 +49,6 @@
                 </a>
                 <a href="signin.html" class="" id="topbarLoginLink">
                   <span>Log in</span>
-                </a>
-                <a href="signup.html" class="" id="topbarSignupLink">
-                  <span>Sign up</span>
                 </a>
                 <a href="#!" class="" id="topbarLogoutLink" hidden>
                   <span>Log out</span>
@@ -115,8 +94,6 @@
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
       <li id="sidebarLoginItem"><a class="nav-link" href="signin.html"><i class="ti ti-login"></i><span class="nav-text">Log in</span></a>
       </li>
-      <li id="sidebarSignupItem"><a class="nav-link" href="signup.html"><i class="ti ti-user-plus"></i><span class="nav-text">Sign
-            up</span></a></li>
       <li id="sidebarUserItem" hidden><a class="nav-link" href="#!"><i class="ti ti-user"></i><span id="sidebarUserName" class="nav-text">Account</span></a></li>
       <li id="sidebarLogoutItem" hidden><a class="nav-link" href="#!" id="sidebarLogoutLink"><i class="ti ti-logout"></i><span class="nav-text">Log out</span></a></li>
     </ul>
@@ -234,6 +211,7 @@ inapp/
   <!-- Bootstrap JS -->
   <script src="./assets/js/main.js" type="module"></script>
   <script src="./assets/js/api.js" type="module"></script>
+  <script src="./assets/js/admin-guard.js" type="module"></script>
   <script src="./assets/js/auth-ui.js" type="module"></script>
 
 
