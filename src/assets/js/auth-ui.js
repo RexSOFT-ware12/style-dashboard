@@ -21,7 +21,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     sidebarLogoutItem: document.getElementById("sidebarLogoutItem"),
   };
 
+  // Admin-only menu entries. This only hides links; the server still
+  // refuses every admin request from a non-admin account.
+  function setAdminVisible(isAdmin) {
+    document.querySelectorAll(".admin-only").forEach((el) => { el.hidden = !isAdmin; });
+  }
+
   function renderSignedOut() {
+    setAdminVisible(false);
     if (els.topbarUserName) els.topbarUserName.textContent = "Guest";
     if (els.topbarUserHandle) els.topbarUserHandle.textContent = "Not signed in";
     if (els.topbarAccountSettingsLink) els.topbarAccountSettingsLink.hidden = true;
@@ -36,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderSignedIn(user) {
+    setAdminVisible(!!user.isAdmin);
     if (els.topbarUserName) els.topbarUserName.textContent = user.name || "Account";
     if (els.topbarUserHandle) els.topbarUserHandle.textContent = user.email || "";
     if (els.topbarAccountSettingsLink) els.topbarAccountSettingsLink.hidden = false;

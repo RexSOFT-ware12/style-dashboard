@@ -1,6 +1,6 @@
 // Shared auth handler for signin.html and signup.html.
 
-const ALLOWED_REDIRECTS = ["index.html", "inventory.html", "create-product.html", "reports.html", "docs.html"];
+const ALLOWED_REDIRECTS = ["index.html", "inventory.html", "create-product.html", "reports.html", "docs.html", "taxonomies.html", "design-patterns.html", "users.html", "provider-keys.html"];
 
 function redirectToDashboard() {
   const params = new URLSearchParams(window.location.search);

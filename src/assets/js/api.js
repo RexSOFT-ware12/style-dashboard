@@ -192,6 +192,28 @@ const FabricNowAPI = {
   // Stats
   getStats: () => apiRequest("/stats"),
 
+  // Admin (the server rejects these unless the signed-in user is an admin)
+  adminOverview: () => apiRequest("/admin/overview"),
+  adminListUsers: (params = {}) => {
+    const qs = new URLSearchParams(Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined && v !== ""))).toString();
+    return apiRequest(`/admin/users${qs ? `?${qs}` : ""}`);
+  },
+  adminGetUser: (id) => apiRequest(`/admin/users/${id}`),
+  adminBlockUser: (id, reason) => apiRequest(`/admin/users/${id}/block`, { method: "POST", body: { reason } }),
+  adminUnblockUser: (id) => apiRequest(`/admin/users/${id}/unblock`, { method: "POST", body: {} }),
+  adminMarkApiPaid: (id, payload) => apiRequest(`/admin/users/${id}/api-subscription`, { method: "POST", body: payload }),
+  adminAdjustApiCredits: (id, payload) => apiRequest(`/admin/users/${id}/api-credits`, { method: "POST", body: payload }),
+  adminCancelApiPlan: (id) => apiRequest(`/admin/users/${id}/api-subscription/cancel`, { method: "POST", body: {} }),
+  adminListCompanies: (params = {}) => {
+    const qs = new URLSearchParams(Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined && v !== ""))).toString();
+    return apiRequest(`/admin/companies${qs ? `?${qs}` : ""}`);
+  },
+  adminListProviderKeys: () => apiRequest("/admin/provider-keys"),
+  adminSetProviderKey: (name, value) => apiRequest(`/admin/provider-keys/${encodeURIComponent(name)}`, { method: "PUT", body: { value } }),
+  adminClearProviderKey: (name) => apiRequest(`/admin/provider-keys/${encodeURIComponent(name)}`, { method: "DELETE" }),
+  adminTestProviderKey: (name, value) => apiRequest(`/admin/provider-keys/${encodeURIComponent(name)}/test`, { method: "POST", body: { value } }),
+  adminAudit: (limit = 30) => apiRequest(`/admin/audit?limit=${limit}`),
+
   // Local session helpers
   authToken,
   setAuthToken,

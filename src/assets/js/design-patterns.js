@@ -114,8 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.textContent = "Add Design Pattern";
     cancelEditBtn.hidden = true;
     document.getElementById("currentImagePreview").classList.add("d-none");
-    document.getElementById("currentDigitalFileNote").classList.add("d-none");
-    document.getElementById("imageHelpText").textContent =
+    document.getElementById("currentDigitalFileNote").classList.add("d-none");    document.getElementById("imageHelpText").textContent =
       "Upload the source PNG. It's traced into an SVG automatically (deterministic bitmap tracing, not AI) and that SVG is what's shown as the product card image and on the product detail page. Works best on flat-color / line-art artwork; photographic images will come out posterized.";
     document.getElementById("digitalFileHelpText").textContent =
       "Leave this blank — the .zip customers download is built automatically from the artwork you upload above (the original image + the traced SVG). Only attach a file here if you want to override that with your own custom .zip.";
@@ -126,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("patternName").value = product.name || "";
     document.getElementById("patternPrice").value = product.price ?? "";
     document.getElementById("patternDescription").value = product.description || "";
+    document.getElementById("patternPinterestUrl").value = product.pinterestUrl || "";
 
     if (product.image) {
       const preview = document.getElementById("currentImagePreview");
@@ -202,6 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = document.getElementById("patternName").value.trim();
     const price = document.getElementById("patternPrice").value;
     const description = document.getElementById("patternDescription").value.trim();
+    const pinterestUrl = document.getElementById("patternPinterestUrl").value.trim();
 
     if (!name || !price) {
       showAlert("Please fill in the name and price.");
@@ -244,6 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("name", name);
       formData.append("price", price);
       formData.append("description", description);
+      formData.append("pinterestUrl", pinterestUrl);
       if (hasImage) formData.append("image", imageInput.files[0]);
       if (digitalFileGcs) formData.append("digitalFileGcs", JSON.stringify(digitalFileGcs));
 

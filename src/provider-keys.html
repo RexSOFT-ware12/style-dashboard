@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>AI &amp; API Keys - FabricNow Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="./assets/images/favicon_io/site.webmanifest">
+  <link rel="stylesheet" href="./assets/scss/style.scss">
+</head>
+
+<body>
+  <div id="overlay" class="overlay"></div>
+  <!-- TOPBAR -->
+  <nav id="topbar" class="navbar bg-white border-bottom fixed-top topbar px-3">
+    <button id="toggleBtn" class="d-none d-lg-inline-flex btn btn-light btn-icon btn-sm ">
+      <i class="ti ti-layout-sidebar-left-expand"></i>
+    </button>
+
+    <!-- MOBILE -->
+    <button id="mobileBtn" class="btn btn-light btn-icon btn-sm d-lg-none me-2">
+      <i class="ti ti-layout-sidebar-left-expand"></i>
+    </button>
+    <div>
+      <!-- Navbar nav -->
+     <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
+        <!-- Pages link -->
+
+        <!-- Bell icon (no real notifications backend yet — shown empty rather than faked) -->
+        <li>
+          <a class="position-relative btn-icon btn-sm btn-light btn rounded-circle" data-bs-toggle="dropdown"
+            aria-expanded="false" href="#" role="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-bell">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+              <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+            </svg>
+          </a>
+          <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-0">
+            <ul class="list-unstyled p-0 m-0">
+              <li class="px-4 py-3 text-center text-secondary small">No new notifications</li>
+            </ul>
+          </div>
+        </li>
+        <!-- Dropdown -->
+        <li class="ms-3 dropdown">
+          <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="./assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-sm rounded-circle" />
+          </a>
+          <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
+            <div>
+              <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
+                <img src="./assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-md rounded-circle" />
+                <div>
+                  <h4 id="topbarUserName" class="mb-0 small">Guest</h4>
+                  <p id="topbarUserHandle" class="mb-0  small">Not signed in</p>
+                </div>
+              </div>
+              <div class="p-3 d-flex flex-column gap-1 small lh-lg">
+                <a href="#!" class="" id="topbarAccountSettingsLink" hidden>
+                  <span>Account Settings</span>
+                </a>
+                <a href="signin.html" class="" id="topbarLoginLink">
+                  <span>Log in</span>
+                </a>
+                <a href="signup.html" class="" id="topbarSignupLink">
+                  <span>Sign up</span>
+                </a>
+                <a href="#!" class="" id="topbarLogoutLink" hidden>
+                  <span>Log out</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <div class="logo-area">
+      <a href="index.html" class="d-inline-flex"><img src="./assets/images/logo-icon.svg" alt="" width="24">
+        <span class="logo-text ms-2"> <span class="fw-bold" style="font-size:1.15rem;letter-spacing:.02em;color:#302C4D;">Fabric<span style="color:#E66239;">Now</span></span></span>
+      </a>
+    </div>
+    <ul class="nav flex-column">
+      <li class="px-4 py-2"><small class="nav-text">Main</small></li>
+      <li><a class="nav-link" href="index.html"><i class="ti ti-home"></i><span
+            class="nav-text">Dashboard</span></a></li>
+      <li><a class="nav-link" href="inventory.html"><i class="ti ti-box-seam"></i><span
+            class="nav-text">Inventory</span></a></li>
+      <li><a class="nav-link" href="create-product.html"><i class="ti ti-plus"></i><span class="nav-text">Add
+            Product</span></a></li>
+      <li><a class="nav-link" href="design-patterns.html"><i class="ti ti-vector-bezier-2"></i><span class="nav-text">Design Patterns</span></a></li>
+      <li><a class="nav-link" href="taxonomies.html"><i class="ti ti-list-details"></i><span class="nav-text">Catalog Options</span></a></li>
+    <li><a class="nav-link" href="reports.html"><i class="ti ti-receipt"></i><span class="nav-text">Reports</span></a>
+      </li>
+    <li><a class="nav-link" href="404-error.html"><i class="ti ti-alert-circle"></i><span class="nav-text">404 Error</span></a>
+      </li>
+      <li><a class="nav-link" href="docs.html"><i class="ti ti-file-text"></i><span class="nav-text">Docs</span></a></li>
+
+      <li class="px-4 pt-4 pb-2 admin-only" hidden><small class="nav-text">Admin</small></li>
+      <li class="admin-only" hidden><a class="nav-link" href="users.html"><i class="ti ti-users"></i><span class="nav-text">Users &amp; Companies</span></a></li>
+      <li class="admin-only" hidden><a class="nav-link active" href="provider-keys.html"><i class="ti ti-key"></i><span class="nav-text">AI &amp; API Keys</span></a></li>
+
+      <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
+      <li id="sidebarLoginItem"><a class="nav-link" href="signin.html"><i class="ti ti-login"></i><span class="nav-text">Log in</span></a>
+      </li>
+      <li id="sidebarSignupItem"><a class="nav-link" href="signup.html"><i class="ti ti-user-plus"></i><span class="nav-text">Sign
+            up</span></a></li>
+      <li id="sidebarUserItem" hidden><a class="nav-link" href="#!"><i class="ti ti-user"></i><span id="sidebarUserName" class="nav-text">Account</span></a></li>
+      <li id="sidebarLogoutItem" hidden><a class="nav-link" href="#!" id="sidebarLogoutLink"><i class="ti ti-logout"></i><span class="nav-text">Log out</span></a></li>
+    </ul>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main id="content" class="content py-10">
+    <div class="container-fluid">
+      <div class="row mb-4">
+        <div class="col-12">
+          <h1 class="fs-3 mb-1">AI &amp; API Keys</h1>
+          <p class="text-secondary mb-1">Update the OpenAI, Claude, Gemini and other provider keys without touching the server or redeploying.</p>
+          <p class="small text-secondary mb-0">Keys are stored encrypted and are never shown again after saving (only the last 4 characters). A key saved here replaces the server's default; <strong>Remove</strong> puts the server default back.</p>
+        </div>
+      </div>
+
+      <div id="adminAlert" class="alert d-none" role="alert"></div>
+      <div id="keyGroups" class="row g-4"><div class="col-12 text-secondary">Loading…</div></div>
+
+      <div class="card mt-4">
+        <div class="card-body">
+          <div class="d-flex gap-2 align-items-start">
+            <i class="ti ti-info-circle fs-4 text-primary"></i>
+            <div class="small text-secondary">
+              <p class="mb-1"><strong>When does a change take effect?</strong> Immediately on the server you're connected to, and on every other server within about a minute.</p>
+              <p class="mb-1">Settings marked <span class="badge bg-warning-subtle text-warning-emphasis">restart needed</span> (model names) are read once at startup, so they apply after the next deploy.</p>
+              <p class="mb-0">Settings marked <span class="badge bg-info-subtle text-info-emphasis">also used by garment-service</span> reach the garment service only once it's set to fetch them from the backend (see the notes delivered with this update).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header"><h2 class="h6 mb-0">Recent admin activity</h2></div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead class="table-light"><tr><th>When</th><th>Admin</th><th>Action</th><th>Target</th></tr></thead>
+            <tbody id="auditRows"><tr><td colspan="4" class="text-center text-secondary py-3">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="./assets/js/main.js" type="module"></script>
+  <script src="./assets/js/api.js" type="module"></script>
+  <script src="./assets/js/auth-ui.js" type="module"></script>
+  <script src="./assets/js/provider-keys.js" type="module"></script>
+
+</body>
+
+</html>
