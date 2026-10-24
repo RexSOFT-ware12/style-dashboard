@@ -9,7 +9,7 @@
 - Kept the existing backend API base URL and endpoint contracts unchanged.
 
 ## Configuration
-`FABRICNOW_API_BASE` is set to `https://stream-sell.de.r.appspot.com/api` in `.env`. Update it only if your backend base URL changes.
+`FABRICNOW_API_BASE` is set to `https://backend.fabricnow.pro` in `.env`. Set the same variable and value in Vercel's project environment variables for deployments.
 
 ## Important security note
 The browser-side guard improves the user experience but is not a replacement for backend authorization. Every `/admin/*` endpoint and any data-changing endpoint must enforce admin permissions server-side. Never rely on hidden links or frontend redirects as the security boundary.
