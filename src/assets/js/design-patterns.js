@@ -224,15 +224,14 @@ document.addEventListener("DOMContentLoaded", () => {
         showAlert("You're not signed in. Sign in first, or the request will be rejected by the API.", "warning");
       }
 
-      // Large .zip bundles go straight to cloud storage first, same as the
-      // regular "Add Product" flow — this request never carries the zip's
-      // bytes.
-      let digitalFileGcs = null;
+      // ZIP bytes upload directly to Cloudinary; the product request only
+      // carries the signed asset metadata.
+      let digitalFileCloudinary = null;
       if (hasDigitalFile) {
         submitBtn.textContent = "Uploading file...";
         progressWrap?.classList.remove("d-none");
         progressText?.classList.remove("d-none");
-        digitalFileGcs = await window.FabricNowAPI.uploadDigitalFile(
+        digitalFileCloudinary = await window.FabricNowAPI.uploadDigitalFile(
           digitalFileInput.files[0],
           (percent) => {
             if (progressBar) progressBar.style.width = `${percent}%`;
@@ -247,7 +246,9 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("description", description);
       formData.append("pinterestUrl", pinterestUrl);
       if (hasImage) formData.append("image", imageInput.files[0]);
-      if (digitalFileGcs) formData.append("digitalFileGcs", JSON.stringify(digitalFileGcs));
+      if (digitalFileCloudinary) {
+        formData.append("digitalFileCloudinary", JSON.stringify(digitalFileCloudinary));
+      }
 
       progressWrap?.classList.add("d-none");
       progressText?.classList.add("d-none");

@@ -131,7 +131,7 @@ function fillFormFromProduct(product) {
     digitalNote.classList.remove("d-none");
   }
   document.getElementById("digitalFileHelpText").textContent =
-    "Leave blank to keep the current file, or choose a new .zip to replace it. Up to 1000MB.";
+    "Leave blank to keep the current file, or choose a new .zip to replace it. Up to 200MB.";
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -241,15 +241,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
       }
 
-      // Large .zip bundles are uploaded straight to cloud storage first —
-      // this request never carries the file's bytes, which is what lets it
-      // go up to ~1000MB without hitting the API's own request-size limit.
-      let digitalFileGcs = null;
+      // Upload the ZIP directly to Cloudinary so the product request carries
+      // only the signed asset metadata.
+      let digitalFileCloudinary = null;
       if (hasDigitalFile) {
         submitBtn.textContent = "Uploading file...";
         progressWrap?.classList.remove("d-none");
         progressText?.classList.remove("d-none");
-        digitalFileGcs = await window.FabricNowAPI.uploadDigitalFile(
+        digitalFileCloudinary = await window.FabricNowAPI.uploadDigitalFile(
           digitalFileInput.files[0],
           (percent) => {
             if (progressBar) progressBar.style.width = `${percent}%`;
@@ -263,7 +262,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (hasFile) imageFiles.forEach((file) => formData.append("image", file));
       if (hasFabricImage) formData.append("fabricImage", fabricImageInput.files[0]);
       galleryFiles.forEach((file) => formData.append("images", file));
-      if (digitalFileGcs) formData.append("digitalFileGcs", JSON.stringify(digitalFileGcs));
+      if (digitalFileCloudinary) {
+        formData.append("digitalFileCloudinary", JSON.stringify(digitalFileCloudinary));
+      }
 
       submitBtn.textContent = isEditMode ? "Updating..." : "Adding...";
       progressWrap?.classList.add("d-none");

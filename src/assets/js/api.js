@@ -4,10 +4,11 @@
  * Set window.FABRICNOW_API_BASE before this script runs to point at a
  * different backend (e.g. a deployed URL). Defaults to local dev.
  */
-const API_BASE =
+const configuredApiBase =
   window.FABRICNOW_API_BASE ||
   import.meta.env.FABRICNOW_API_BASE ||
-  "http://localhost:4000/api";
+  "http://localhost:4000";
+const API_BASE = `${configuredApiBase.replace(/\/+$/, "").replace(/\/api$/i, "")}/api`;
 
 function authToken() {
   return localStorage.getItem("fabricnow_token");
@@ -84,104 +85,79 @@ const FabricNowAPI = {
   updateDesignPattern: (id, formData) =>
     apiRequest(`/products/design-patterns/${id}`, { method: "PUT", body: formData, isFormData: true }),
 
-  // Digital file — resumable direct-to-GCS upload.
-  // The API only creates the upload session; the ZIP bytes go directly from
-  // the browser to GCS in 16MB chunks. This avoids App Engine's 32MB request
-  // limit and lets us retry/resume individual chunks on flaky connections.
-  // IMPORTANT: this is NOT a time-limited signed URL. The returned session URI
-  // is used only until this particular upload finishes. Customer downloads are
-  // still permanently available through the authenticated order endpoint.
+  // ZIP bytes upload directly to Cloudinary in signed chunks. The backend
+  // keeps the API secret and only returns short-lived upload signatures.
   uploadDigitalFile: async (file, onProgress) => {
     if (!file || !file.name || !/\.zip$/i.test(file.name)) {
       throw new Error("Please choose a .zip file.");
     }
-    const maxBytes = 1000 * 1024 * 1024;
+    const maxBytes = 200 * 1024 * 1024;
     if (file.size <= 0 || file.size > maxBytes) {
-      throw new Error("The ZIP file must be between 1 byte and 1000MB.");
+      throw new Error("The ZIP file must be between 1 byte and 200MB.");
     }
 
-    const contentType = file.type || "application/zip";
-    const { data } = await apiRequest("/products/digital-file/resumable-upload", {
-      method: "POST",
-      body: { originalName: file.name, contentType, size: file.size },
-    });
+    const CHUNK_SIZE = 20 * 1024 * 1024;
+    const getSignature = (publicId) =>
+      apiRequest("/products/digital-file/upload-signature", {
+        method: "POST",
+        body: { originalName: file.name, publicId, size: file.size },
+      }).then((response) => response.data);
 
-    const sessionUrl = data.uploadUrl;
-    const CHUNK_SIZE = 16 * 1024 * 1024; // 16MB — reliable without huge browser buffers
-    const MAX_RETRIES = 5;
+    let signed = await getSignature();
+    const publicId = signed.publicId;
+    const uploadId = crypto.randomUUID();
+    let finalAsset = null;
+    let uploaded = 0;
 
-    const xhrRequest = (method, url, body, headers = {}) =>
+    const uploadChunk = (start, end, signature) =>
       new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        Object.entries(headers).forEach(([key, value]) => xhr.setRequestHeader(key, value));
-        xhr.onload = () => resolve(xhr);
-        xhr.onerror = () => reject(new Error("Upload connection failed. Please retry."));
-        xhr.ontimeout = () => reject(new Error("Upload timed out. Please retry."));
-        xhr.timeout = 0; // Large files may legitimately take a long time.
-        xhr.send(body);
-      });
-
-    const queryOffset = async () => {
-      const xhr = await xhrRequest("PUT", sessionUrl, null, {
-        "Content-Range": `bytes */${file.size}`,
-      });
-      if (xhr.status === 308) {
-        const range = xhr.getResponseHeader("Range");
-        if (!range) return 0;
-        const match = /bytes=0-(\d+)/i.exec(range);
-        return match ? Number(match[1]) + 1 : 0;
-      }
-      if (xhr.status >= 200 && xhr.status < 300) return file.size;
-      throw new Error(`Could not resume upload (${xhr.status})`);
-    };
-
-    let uploaded = 0;
-    while (uploaded < file.size) {
-      const end = Math.min(uploaded + CHUNK_SIZE, file.size) - 1;
-      const chunk = file.slice(uploaded, end + 1);
-      let completed = false;
-
-      for (let attempt = 0; attempt <= MAX_RETRIES && !completed; attempt += 1) {
-        try {
-          const xhr = await xhrRequest("PUT", sessionUrl, chunk, {
-            "Content-Type": contentType,
-            "Content-Range": `bytes ${uploaded}-${end}/${file.size}`,
-          });
-
-          if (xhr.status === 308) {
-            const range = xhr.getResponseHeader("Range");
-            const match = range && /bytes=0-(\d+)/i.exec(range);
-            const nextOffset = match ? Number(match[1]) + 1 : end + 1;
-            uploaded = Math.max(uploaded, nextOffset);
-            completed = true;
-          } else if (xhr.status >= 200 && xhr.status < 300) {
-            uploaded = file.size;
-            completed = true;
-          } else if (xhr.status >= 500) {
-            throw new Error(`Temporary storage error (${xhr.status})`);
-          } else {
-            throw new Error(`Upload to storage failed (${xhr.status})`);
+        const formData = new FormData();
+        formData.append("file", file.slice(start, end), file.name);
+        formData.append("api_key", signature.apiKey);
+        formData.append("timestamp", String(signature.timestamp));
+        formData.append("signature", signature.signature);
+        formData.append("public_id", signature.publicId);
+        formData.append("type", signature.type);
+        formData.append("filename_override", signature.filenameOverride);
+        formData.append("overwrite", "false");
+        xhr.open("POST", `https://api.cloudinary.com/v1_1/${signature.cloudName}/raw/upload`, true);
+        xhr.setRequestHeader("X-Unique-Upload-Id", uploadId);
+        xhr.setRequestHeader("Content-Range", `bytes ${start}-${end - 1}/${file.size}`);
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable && onProgress) {
+            onProgress(Math.min(99, Math.round(((start + event.loaded) / file.size) * 100)));
           }
-        } catch (error) {
-          if (attempt >= MAX_RETRIES) throw error;
-          // If the response was lost after GCS accepted the bytes, asking GCS
-          // for its current offset prevents us from duplicating a chunk.
+        };
+        xhr.onload = () => {
+          let result;
           try {
-            uploaded = await queryOffset();
-            if (uploaded >= file.size) completed = true;
-            else if (uploaded > end) completed = true;
+            result = JSON.parse(xhr.responseText);
           } catch {
-            // Brief backoff, then retry the same chunk.
-            await new Promise((r) => setTimeout(r, 750 * (attempt + 1)));
+            result = null;
           }
-        }
-      }
+          if (xhr.status >= 200 && xhr.status < 300) return resolve(result);
+          reject(new Error(result?.error?.message || `Cloudinary upload failed (${xhr.status}).`));
+        };
+        xhr.onerror = () => reject(new Error("Upload connection failed. Please restart the ZIP upload."));
+        xhr.ontimeout = () => reject(new Error("Upload timed out. Please restart the ZIP upload."));
+        xhr.timeout = 0;
+        xhr.send(formData);
+      });
 
+    while (uploaded < file.size) {
+      const end = Math.min(uploaded + CHUNK_SIZE, file.size);
+      signed = await getSignature(publicId);
+      finalAsset = await uploadChunk(uploaded, end, signed);
+      uploaded = end;
       if (onProgress) onProgress(Math.min(100, Math.round((uploaded / file.size) * 100)));
     }
 
-    return { objectName: data.objectName, originalName: file.name, size: file.size };
+    if (!finalAsset?.public_id || Number(finalAsset.bytes) !== file.size) {
+      throw new Error("Cloudinary did not confirm the complete ZIP upload. Please try again.");
+    }
+
+    return { publicId: finalAsset.public_id, originalName: file.name, size: file.size };
   },
 
   // Auth
