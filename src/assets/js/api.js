@@ -197,3 +197,9 @@ const FabricNowAPI = {
 };
 
 window.FabricNowAPI = FabricNowAPI;
+// Manual garment pattern production queue
+FabricNowAPI.patternRequests = {
+  list: (status = "all") => apiRequest(`/pattern-requests/admin/list?status=${encodeURIComponent(status)}`),
+  setStatus: (id, status, adminNote = "") => apiRequest(`/pattern-requests/admin/${encodeURIComponent(id)}/status`, { method: "PATCH", body: { status, adminNote } }),
+  uploadResult: (id, formData) => apiRequest(`/pattern-requests/admin/${encodeURIComponent(id)}/result`, { method: "POST", body: formData, isFormData: true }),
+};
